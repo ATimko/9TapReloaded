@@ -1,5 +1,6 @@
 using _9TapReloaded;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace NineTapTest
 {
@@ -18,9 +19,17 @@ namespace NineTapTest
             Assert.AreEqual(score, g.Game1);
         }
         [TestMethod]
-        public void Game1_InvalidScore_ThrowsArgumentException()
+        [DataRow((short)-1)]
+        [DataRow((short)-1000)]
+        [DataRow(short.MinValue)]
+        [DataRow((short)301)]
+        [DataRow((short)3000)]
+        [DataRow(short.MaxValue)]
+        public void Game1_InvalidScore_ThrowsArgumentException(short score)
         {
-            Assert.Fail();
+            Game g = new Game();
+            //g.Game1 = score;
+            Assert.ThrowsException<ArgumentException>(() => g.Game1 = score);
         }
         [TestMethod]
         public void UpdateGameScoreProperties_UpdatesTotalScore()
